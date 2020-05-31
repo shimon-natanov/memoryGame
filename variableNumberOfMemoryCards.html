@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <!-- <link rel='stylesheet' type='text/css' media='screen' href='main.css'> -->
+    <!-- <script src='main.js'></script> -->
+    <style>
+        body {
+           width : 100%;
+           height : 100%
+        }
+
+        body > div {
+            display :flex;
+        }
+        #mainPlayinDiv {
+            /* width : 100vw;
+            height : 90vh;
+            border: 4px orange solid; */
+            width : 100%;
+           height : 100%;
+            display :flex;
+            flex-wrap: wrap;
+        }
+        #mainPlayinDiv > img {
+            width : 10vw;
+            /* width : auto; */
+            height : 30vh;
+            /* height : auto; */
+            /* height: fit-content; */
+            
+            margin: 10px;
+            border: 2px orange solid;
+           
+            
+        }
+
+        img {
+            width : auto;
+            height : auto;
+        }
+    </style>
+</head>
+<body>
+    <label for='numberOfCards'>please enter number of images</label>
+    <input type="number" id='numberOfCards' min="2" max="10"> <br>
+    <button id="btn">Set</button>
+    <div  id="mainPlayinDiv"  >
+        <!-- <img id='0'src="./images/backSide.jpg" alt="back">
+        <img id='1' src="./images/backSide.jpg" alt="back">
+        <img id='2' src="./images/backSide.jpg" alt="back">
+        <img id='3' src="./images/backSide.jpg" alt="back">
+        <img id='4' src="./images/backSide.jpg" alt="back">
+        <img id='5' src="./images/backSide.jpg" alt="back">
+        <img id='6' src="./images/backSide.jpg" alt="back">
+        <img id='7' src="./images/backSide.jpg" alt="back"> -->
+
+    </div>
+    <script>
+
+
+        cardsList=[
+            './images/bed.jpg',
+            './images/chair.jpg',
+            './images/shida.jpg',
+            './images/table.jpg',
+            './images/dack.jpg',
+            './images/dog.jpg',
+            './images/egle.jpg',
+            './images/shida.jpg',
+            './images/spiderman.jpg',
+            './images/statuio.jpg',
+            './images/swingchair.jpg',
+            './images/waterFall.jpg'
+        ]
+           
+        mainPlayView = document.getElementById('mainPlayinDiv')
+        btn= document.querySelector('#btn')
+        btn.onclick = function(){
+        numberOfImages= document.querySelector('#numberOfCards').value
+        mainPlayView.innerHTML= ''
+        cards =[]
+        timeout = false
+            for (i=0 ; i<(numberOfImages*2); i++){
+                mainPlayView.innerHTML += `<img id=${i} src="./images/backSide.jpg" alt="backSide">`
+            } 
+            for (i=0; i<(numberOfImages); i++){
+                cards.push(cardsList[i])
+                cards.push(cardsList[i])
+            }    
+            numberOfshufling = cards.length
+            shuffleCards( cards,numberOfshufling) 
+        }
+        numberofClicks= 0
+        lastCardId =""
+        last2cards=[]
+        mainPlayView.onclick = function(e){
+            if ((e.target.id != lastCardId)&&(numberofClicks <=2)&&(!timeout)){ // to make sure the same card was not clicked twice
+                numberofClicks++
+                last2cards.push(e.target)          
+            // if (numberofClicks <=2) {
+                e.target.src=cards[e.target.id]
+                if (numberofClicks == 2){
+                    if (cards[lastCardId] != cards[e.target.id]){ // checks to see if both of the cards are diffrent
+                        timeout = true
+                          setTimeout(function (){
+                            
+                            last2cards[0].src = "./images/backSide.jpg"
+                            last2cards[1].src = "./images/backSide.jpg" 
+                            last2cards=[]  
+                            numberofClicks= 0  
+                            timeout=false                                                   
+                          },2000)
+                    }else {
+                        // last2cards[0].style.display = none
+                        last2cards=[]                       
+                        }
+                    // numberofClicks= 0 
+                    lastCardId =""
+                    numberofClicks= 0
+                }else{
+                    lastCardId=e.target.id 
+                    } 
+            // }
+            // else turnAllCards()
+            } else return
+        }      
+        function shuffleCards(cardsArray,numberOfshufling){
+            for (i=0 ; i<=numberOfshufling;i++){
+                randomNum1 = Math.floor(Math.random()*(cardsArray.length-1))
+                randomNum2 = Math.floor(Math.random()*(cardsArray.length-1))
+                if (randomNum1 != randomNum2){
+                    [cardsArray[randomNum1],cardsArray[randomNum2]] = [cardsArray[randomNum2],cardsArray[randomNum1]]
+                }
+            }
+        } 
+    </script>
+</body>
+</html>
