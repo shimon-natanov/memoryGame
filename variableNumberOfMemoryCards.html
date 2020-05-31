@@ -45,9 +45,11 @@
     </style>
 </head>
 <body>
-    <label for='numberOfCards'>please enter number of images</label>
-    <input type="number" id='numberOfCards' min="2" max="10"> <br>
+    <label for='numberOfCards'>please enter number of images ( max 10 Images)</label>
+    <input type="number" id='numberOfCards' min="2" max="10"> 
     <button id="btn">Set</button>
+    <button onclick="openFullscreen();">Open Fullscreen</button>
+    <button onclick="closeFullscreen();">Close Fullscreen</button>
     <div  id="mainPlayinDiv"  >
         <!-- <img id='0'src="./images/backSide.jpg" alt="back">
         <img id='1' src="./images/backSide.jpg" alt="back">
@@ -79,19 +81,46 @@
         mainPlayView = document.getElementById('mainPlayinDiv')
         btn= document.querySelector('#btn')
         btn.onclick = function(){
-        numberOfImages= document.querySelector('#numberOfCards').value
-        mainPlayView.innerHTML= ''
-        cards =[]
-        timeout = false
-            for (i=0 ; i<(numberOfImages*2); i++){
-                mainPlayView.innerHTML += `<img id=${i} src="./images/backSide.jpg" alt="backSide">`
-            } 
-            for (i=0; i<(numberOfImages); i++){
-                cards.push(cardsList[i])
-                cards.push(cardsList[i])
-            }    
-            numberOfshufling = cards.length
-            shuffleCards( cards,numberOfshufling) 
+            
+            numberOfImages= document.querySelector('#numberOfCards').value
+            if (numberOfImages <= 10) {
+                mainPlayView.innerHTML= ''
+                cards =[]
+                timeout = false
+                for (i=0 ; i<(numberOfImages*2); i++){
+                    mainPlayView.innerHTML += `<img id=${i} src="./images/backSide.jpg" alt="backSide">`
+                } 
+                for (i=0; i<(numberOfImages); i++){
+                    cards.push(cardsList[i])
+                    cards.push(cardsList[i])
+                }    
+                numberOfshufling = cards.length
+                shuffleCards( cards,numberOfshufling) 
+            }
+        }
+        var elem = document.documentElement;
+        function openFullscreen() {
+          if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+          } else if (elem.mozRequestFullScreen) { /* Firefox */
+            elem.mozRequestFullScreen();
+          } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+            elem.webkitRequestFullscreen();
+          } else if (elem.msRequestFullscreen) { /* IE/Edge */
+            elem.msRequestFullscreen();
+          }
+        }
+
+        function closeFullscreen() {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+          } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+          } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+          }
         }
         numberofClicks= 0
         lastCardId =""
